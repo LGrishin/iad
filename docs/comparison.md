@@ -6,8 +6,12 @@
 Они создаются по отдельному запросу во внешнем каталоге. В самом каркасе нет
 готовой пары версий или данных конкретного проекта.
 
+Папку для сравнения можно указать в запросе. Если путь не указан, агент выбирает
+подходящий каталог вне IAD Kit и сообщает его в результате; фиксированного пути
+по умолчанию нет. Ниже `<diagram-dir>` обозначает выбранный каталог.
+
 ```text
-/Users/lawrence/work/gravilink/aid/<diagram-id>/
+<diagram-dir>/
   comparison.json
   before/
     project.json
@@ -26,8 +30,8 @@
 Запуск из каталога каркаса:
 
 ```sh
-python3 -m iadkit compare /Users/lawrence/work/gravilink/aid/<diagram-id>
-python3 -m http.server 8011 --bind 127.0.0.1 --directory /Users/lawrence/work/gravilink/aid/<diagram-id>/build
+python3 -m iadkit compare "<diagram-dir>"
+python3 -m http.server 8011 --bind 127.0.0.1 --directory "<diagram-dir>/build"
 ```
 
 Открой `http://127.0.0.1:8011/` либо готовый `build/index.html` напрямую в Chrome.
