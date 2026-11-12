@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://iad.local/schemas/v1/node.schema.json",
+  "title": "IAD v1 node",
+  "$ref": "iad.schema.json#/$defs/node"
+}

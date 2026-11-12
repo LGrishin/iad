@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="/* IAD_PROJECT_DESCRIPTION */">
+  <title>/* IAD_PROJECT_NAME */ · IAD</title>
+  <style>/* IAD_STYLES */</style>
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="#" id="home" aria-label="IAD — Interactive Architecture Diagram"><span class="brand-mark">I<span>↗</span></span><span>/* IAD_PROJECT_NAME */ <small>архитектура в действии</small></span></a>
+    <div class="header-meta"><span class="tag">IAD / 01</span><span id="revision"></span><span class="live-dot"></span><span>По коду</span></div>
+    <button id="about" class="quiet">О карте</button>
+  </header>
+  <main class="workspace">
+    <aside class="scenarios" aria-label="Сценарии проекта">
+      <div class="section-title"><span>01 / ИССЛЕДОВАТЬ</span><span id="scenario-count"></span></div>
+      <h1>Карта проекта</h1>
+      <p class="intro">Выберите действие и проследите его через границы модулей.</p>
+      <nav id="scope-navigation" class="scope-navigation" aria-label="Уровень архитектуры" hidden></nav>
+      <p id="scope-route-note" class="scope-route-note" hidden></p>
+      <div id="scenario-list"></div>
+      <div class="sidebar-note"><span class="note-icon">⌘</span><div>Один проект. Общая карта.<br><span>У каждого сценария свой прогресс.</span></div></div>
+      <button id="download-model" class="text-button">↓ Модель JSON</button>
+      <button id="download-snapshot" class="text-button">↓ Снимок архитектуры</button>
+      <label class="text-button file-label">↔ Сравнить со снимком<input id="compare-file" type="file" accept="application/json,.json" hidden></label>
+    </aside>
+    <section class="map-column" aria-label="Интерактивная карта">
+      <div class="map-toolbar"><div id="breadcrumbs"><button data-root>/* IAD_PROJECT_NAME */</button></div><div class="map-actions"><button id="all-edges" aria-pressed="false" title="Показать все архитектурные связи">Все связи</button><button id="details-toggle" aria-expanded="true">Детали ⇥</button></div></div>
+      <div class="map-viewport" id="map-viewport">
+        <div class="map-heading"><span id="map-kicker">АРХИТЕКТУРА / ТЕКУЩАЯ ВЕРСИЯ</span><h2 id="map-title">Сценарий</h2><p id="map-subtitle"></p></div>
+        <svg id="map" role="img" aria-label="Модули проекта и направленные связи"><defs><marker id="arrow-muted" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--edge-muted)"/></marker><marker id="arrow-active" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--route)"/></marker></defs><g id="scene"></g></svg>
+        <div class="map-legend"><span><i class="legend-line"></i> маршрут</span><span><i class="legend-node"></i> текущий шаг</span><span><i class="legend-api"></i> API · нажмите</span><span>⊞ шапка модуля</span></div>
+        <div class="zoom-controls"><button id="zoom-out" aria-label="Отдалить">−</button><span id="zoom-value">100%</span><button id="zoom-in" aria-label="Приблизить">+</button><button id="fit" title="Вместить карту" aria-label="Вместить карту">⤢</button></div>
+        <button id="routing-status" class="routing-status" hidden></button>
+        <div id="map-hint">Перетаскивайте фон, в том числе внутри модуля · колесо меняет масштаб</div>
+      </div>
+      <section class="player" aria-label="Проигрыватель сценария">
+        <div class="player-top"><div><span class="section-title">02 / ПРОСЛЕДИТЬ</span><p id="step-title" aria-live="polite"></p></div><span id="step-counter" class="tag"></span></div>
+        <div id="timeline" class="timeline" aria-label="Шаги маршрута"></div>
+        <input id="scrubber" type="range" min="0" max="0" value="0" step="1" aria-label="Перейти к шагу">
+        <div class="player-bottom"><div class="transport"><button id="restart" aria-label="С начала" title="С начала">↺</button><button id="back" aria-label="Шаг назад">←</button><button id="play" class="primary">▶ Пуск</button><button id="next" aria-label="Шаг вперёд">→</button></div><span id="player-status"></span><label class="speed-label">Темп <select id="speed" aria-label="Скорость воспроизведения"><option value="2400">0.5×</option><option value="1200" selected>1×</option><option value="600">2×</option></select></label></div>
+      </section>
+    </section>
+    <aside id="details" class="details" aria-label="Подробности"><div class="detail-tabs"><button id="tab-step" class="selected">Шаг</button><button id="tab-node">Модуль</button><button id="close-details" aria-label="Свернуть подробности">×</button></div><div id="detail-content"></div></aside>
+  </main>
+  <dialog id="modal"><div class="modal-heading"><span id="modal-title"></span><button id="close-modal" aria-label="Закрыть">×</button></div><div id="modal-content"></div></dialog>
+  <script id="iad-model" type="application/json">/* IAD_MODEL */</script>
+  <script id="iad-sources" type="application/json">/* IAD_SOURCES */</script>
+  <script>/* IAD_PLAYER */</script>
+  <script>/* IAD_LAYOUT */</script>
+  <script>/* IAD_ROUTING */</script>
+  <script>/* IAD_PORTS */</script>
+  <script>/* IAD_VIEWER */</script>
+</body>
+</html>

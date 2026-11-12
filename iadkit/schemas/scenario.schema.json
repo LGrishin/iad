@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://iad.local/schemas/v1/scenario.schema.json",
+  "title": "IAD v1 scenario",
+  "$ref": "iad.schema.json#/$defs/scenario"
+}

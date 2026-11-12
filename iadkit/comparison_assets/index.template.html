@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <title>/* IAD_COMPARISON_TITLE */ · IAD</title>
+  <style>/* IAD_COMPARISON_STYLES */</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="brand" aria-label="IAD — Interactive Architecture Diagram"><span class="brand-mark">I↗</span><span>IAD / СРАВНЕНИЕ АРХИТЕКТУРЫ</span></div>
+    <h1 id="comparison-title"></h1>
+    <p id="comparison-summary" class="intro"></p>
+    <div id="revisions" class="revisions" aria-label="Сравниваемые версии"></div>
+  </header>
+  <main>
+    <section class="changes-section" aria-label="Что изменилось">
+      <div class="section-heading"><h2>Что изменилось</h2><span id="change-count"></span></div>
+      <div id="change-cards" class="change-cards"></div>
+    </section>
+    <section class="controls" aria-label="Просмотр сравнения">
+      <label class="scenario-label">Сценарий <select id="scenario-select" aria-label="Сценарий сравнения"></select></label>
+      <div class="version-tabs" role="tablist" aria-label="Версия архитектуры"><button id="tab-before" role="tab" aria-selected="false" data-side="before">До</button><button id="tab-after" role="tab" aria-selected="true" data-side="after">После</button></div>
+      <button id="first-divergence" class="primary">Первое расхождение →</button>
+    </section>
+    <div id="scenario-status" class="scenario-status" role="status" aria-live="polite"></div>
+    <p id="comparison-error" class="comparison-error" role="alert" hidden></p>
+    <section id="map-region" class="map-region" aria-label="Карта выбранной версии">
+      <div id="map-caption" class="map-caption"></div>
+      <div id="missing-scenario" class="missing-scenario" hidden></div>
+      <iframe id="frame-before" title="Архитектура до изменения" hidden></iframe>
+      <iframe id="frame-after" title="Архитектура после изменения"></iframe>
+    </section>
+    <details class="limits"><summary>Границы сравнения и проверка</summary><div id="limitations"></div><p>Сравниваются описания архитектуры в двух закреплённых версиях. Исходники обеих версий включены в этот HTML. Карты показывают путь по коду; проигрыватель управляет только локальным просмотром.</p></details>
+  </main>
+  <script id="iad-comparison-data" type="application/json">/* IAD_COMPARISON_DATA */</script>
+  <script>/* IAD_PLAYER */</script>
+  <script>/* IAD_COMPARISON_VIEWER */</script>
+</body>
+</html>

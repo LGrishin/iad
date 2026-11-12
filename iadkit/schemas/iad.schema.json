@@ -1,0 +1,1155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://iad.local/schemas/v1/iad.schema.json",
+  "title": "IAD v1 reusable definitions",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]*$"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "uniqueItems": true
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "reviewed",
+            "unreviewed",
+            "uncertain"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "support": {
+      "type": "object",
+      "required": [
+        "kind",
+        "status"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "callsite",
+            "registration",
+            "implementation",
+            "declaration",
+            "trace",
+            "reference"
+          ]
+        },
+        "status": {
+          "enum": [
+            "reviewed",
+            "unreviewed",
+            "uncertain"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "sourceIntegrity": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "git-verified",
+            "archive-verified",
+            "unavailable"
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "origin": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "repository": {
+      "type": "object",
+      "required": [
+        "id",
+        "path",
+        "revision"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "webUrlTemplate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "included": {
+          "type": "boolean"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "id",
+        "name",
+        "primaryRepository",
+        "repositories"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primaryRepository": {
+          "$ref": "#/$defs/id"
+        },
+        "repositories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/repository"
+          },
+          "minItems": 1
+        },
+        "target": {
+          "$ref": "#/$defs/target"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        },
+        "sourceArchive": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rules": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "ownedData": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "details": {
+          "type": "string"
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "target": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "additionalProperties": true
+    },
+    "term": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "details": {
+          "type": "string"
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        }
+      },
+      "additionalProperties": true
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "role"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "details": {
+          "type": "string"
+        },
+        "ownership": {
+          "type": "string"
+        },
+        "ownershipNote": {
+          "type": "string"
+        },
+        "ownedData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ownedData"
+          },
+          "minItems": 0
+        },
+        "typeExplanations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/term"
+          },
+          "minItems": 0
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "description": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "repository": {
+          "$ref": "#/$defs/id",
+          "description": "Exact pinned repository ID. Inherited from the nearest ancestor when omitted; source references do not assign ownership."
+        }
+      },
+      "additionalProperties": true
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "id",
+        "from",
+        "to",
+        "label",
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "from": {
+          "$ref": "#/$defs/id"
+        },
+        "to": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        },
+        "sourceContract": {
+          "$ref": "#/$defs/id",
+          "description": "Explicit API contract at this endpoint; owned by the endpoint or one of its ancestors."
+        },
+        "targetContract": {
+          "$ref": "#/$defs/id",
+          "description": "Explicit API contract at this endpoint; owned by the endpoint or one of its ancestors."
+        },
+        "contracts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "operation": {
+      "type": "object",
+      "required": [
+        "name",
+        "description",
+        "input",
+        "output"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output": {
+          "type": "string",
+          "minLength": 1
+        },
+        "errors": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        }
+      },
+      "additionalProperties": true
+    },
+    "contract": {
+      "type": "object",
+      "required": [
+        "id",
+        "node",
+        "name",
+        "operations"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "node": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/operation"
+          },
+          "minItems": 1
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        }
+      },
+      "additionalProperties": true
+    },
+    "option": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "condition",
+        "result",
+        "next"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "branch": {
+      "type": "object",
+      "required": [
+        "options"
+      ],
+      "properties": {
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/option"
+          },
+          "minItems": 2
+        }
+      },
+      "additionalProperties": true
+    },
+    "step": {
+      "type": "object",
+      "required": [
+        "id",
+        "from",
+        "to",
+        "title",
+        "input",
+        "action",
+        "output",
+        "next"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "from": {
+          "$ref": "#/$defs/id"
+        },
+        "to": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        },
+        "contracts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "branch": {
+          "$ref": "#/$defs/branch"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        },
+        "nuance": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "call",
+            "stage",
+            "event",
+            "operation",
+            "decision",
+            "return",
+            "data"
+          ]
+        },
+        "basis": {
+          "enum": [
+            "code",
+            "trace"
+          ],
+          "description": "Trace is reserved in the format; IAD Kit 0.1 supports code-based playback only."
+        },
+        "sourceContract": {
+          "$ref": "#/$defs/id",
+          "description": "Explicit API contract at this endpoint; owned by the endpoint or one of its ancestors."
+        },
+        "targetContract": {
+          "$ref": "#/$defs/id",
+          "description": "Explicit API contract at this endpoint; owned by the endpoint or one of its ancestors."
+        }
+      },
+      "additionalProperties": true
+    },
+    "scenario": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "goal",
+        "entry",
+        "steps"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry": {
+          "$ref": "#/$defs/id"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          },
+          "minItems": 1
+        },
+        "basis": {
+          "enum": [
+            "code",
+            "trace"
+          ],
+          "description": "Trace is reserved in the format; IAD Kit 0.1 rejects trace playback until an adapter is implemented."
+        },
+        "mode": {
+          "enum": [
+            "code",
+            "trace"
+          ],
+          "description": "Trace is reserved in the format; IAD Kit 0.1 rejects trace playback until an adapter is implemented."
+        },
+        "preconditions": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 0
+            }
+          ]
+        },
+        "validationSources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "trace": {
+          "type": "object",
+          "required": [
+            "runId",
+            "source"
+          ],
+          "properties": {
+            "runId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "capturedAt": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": true
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Catalogue context, not a restriction on step endpoints. Null or omitted means the overview; repository-set maps require an explicit value."
+        },
+        "trigger": {
+          "$ref": "#/$defs/trigger"
+        },
+        "overviewReason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Explains why an intentionally non-user-triggered journey belongs in the system overview."
+        }
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "id",
+        "repo",
+        "revision",
+        "path",
+        "line",
+        "symbol"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "repo": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1
+        },
+        "support": {
+          "$ref": "#/$defs/support"
+        },
+        "sourceKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceIntegrity": {
+          "$ref": "#/$defs/sourceIntegrity"
+        }
+      },
+      "additionalProperties": true
+    },
+    "view": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "rootOrder": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "initialScenario": {
+          "$ref": "#/$defs/id"
+        },
+        "layout": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "columns": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "cardWidth": {
+              "type": "integer",
+              "minimum": 240,
+              "maximum": 900
+            },
+            "columnGap": {
+              "type": "integer",
+              "minimum": 40,
+              "maximum": 900
+            },
+            "rowGap": {
+              "type": "integer",
+              "minimum": 40,
+              "maximum": 900
+            },
+            "childGap": {
+              "type": "integer",
+              "minimum": 4,
+              "maximum": 100
+            }
+          },
+          "additionalProperties": false
+        },
+        "theme": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "preset": {
+              "enum": [
+                "red-black-gold"
+              ]
+            },
+            "colors": {
+              "type": "object",
+              "required": [],
+              "properties": {
+                "--canvas": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--surface": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--surface-raised": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--surface-hover": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--surface-inset": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--border": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--border-strong": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--card-border": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--text": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--text-soft": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--muted": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--gold": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--gold-light": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--gold-muted": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--gold-surface": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--gold-border": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--route-surface": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--route-border": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--red": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--red-hover": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--current": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--current-surface": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--selected-border": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--selected-hover": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--edge-muted": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--dots": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--code-highlight": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--ink": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--backdrop": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--shadow": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--drawer-shadow": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--canvas-opaque": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--canvas-fade": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--error": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                },
+                "--selection": {
+                  "type": "string",
+                  "pattern": "^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "initialScope": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Initial catalogue context. Null or omitted means overview; initialScenario must be available there."
+        }
+      },
+      "additionalProperties": false
+    },
+    "manifest": {
+      "type": "object",
+      "required": [
+        "format",
+        "formatVersion",
+        "kitVersion",
+        "target",
+        "revision",
+        "primaryRepository",
+        "repositories"
+      ],
+      "properties": {
+        "format": {
+          "const": "IAD"
+        },
+        "formatVersion": {
+          "const": 1
+        },
+        "kitVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "$ref": "#/$defs/target"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "primaryRepository": {
+          "$ref": "#/$defs/id"
+        },
+        "repositories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/repository"
+          },
+          "minItems": 1
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        },
+        "project": {
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "settings": {
+          "$ref": "#/$defs/view"
+        }
+      },
+      "additionalProperties": true
+    },
+    "model": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "manifest",
+        "view",
+        "nodes",
+        "edges",
+        "contracts",
+        "scenarios",
+        "evidence",
+        "limitations"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "manifest": {
+          "$ref": "#/$defs/manifest"
+        },
+        "view": {
+          "$ref": "#/$defs/view"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          },
+          "minItems": 1
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/edge"
+          },
+          "minItems": 0
+        },
+        "contracts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contract"
+          },
+          "minItems": 0
+        },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/scenario"
+          },
+          "minItems": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 0
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "trigger": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "user",
+            "system",
+            "developer",
+            "internal"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sources": {
+          "$ref": "#/$defs/sources"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

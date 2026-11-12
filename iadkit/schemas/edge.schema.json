@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://iad.local/schemas/v1/edge.schema.json",
+  "title": "IAD v1 edge",
+  "$ref": "iad.schema.json#/$defs/edge"
+}

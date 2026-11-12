@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://iad.local/schemas/v1/comparison.schema.json",
+  "title": "IAD v1 authored architecture comparison",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "summary",
+    "before",
+    "after",
+    "changes"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "iad.schema.json#/$defs/id"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "before": {
+      "type": "string",
+      "minLength": 1
+    },
+    "after": {
+      "type": "string",
+      "minLength": 1
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "consequence",
+          "scenarioId",
+          "beforeSources",
+          "afterSources"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "iad.schema.json#/$defs/id"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "details": {
+            "type": "string"
+          },
+          "consequence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scenarioId": {
+            "$ref": "iad.schema.json#/$defs/id"
+          },
+          "beforeSources": {
+            "$ref": "#/$defs/ids",
+            "minItems": 1
+          },
+          "afterSources": {
+            "$ref": "#/$defs/ids",
+            "minItems": 1
+          },
+          "beforeNodes": {
+            "$ref": "#/$defs/ids"
+          },
+          "afterNodes": {
+            "$ref": "#/$defs/ids"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "ids": {
+      "type": "array",
+      "items": {
+        "$ref": "iad.schema.json#/$defs/id"
+      },
+      "uniqueItems": true
+    }
+  }
+}
